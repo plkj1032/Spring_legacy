@@ -3,14 +3,14 @@ package com.codemate.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-import com.codemate.dto.memberDTO;
+import com.codemate.dto.MemberDTO;
 import com.codemate.util.DBConnection;
 import com.codemate.util.PasswordUtil;
 
-public class memberDAO {
-	public boolean insertMember(memberDTO dto)
+public class MemberDAO {
+	public boolean insertMember(MemberDTO dto)
 	{
-		String sql = "INSERT INTO(name,age,email,password) VALUES(?,?,?,?)";
+		String sql = "INSERT INTO members(name,age,email,password) VALUES(?,?,?,?)";
 		
 		try(
 			Connection conn = DBConnection.getConnection();

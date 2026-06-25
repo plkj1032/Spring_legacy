@@ -1,6 +1,6 @@
 package com.codemate.dto;
 
-public class memberDTO {
+public class MemberDTO {
 	private int id;
 	private String name;
 	private int age;
