@@ -17,4 +17,9 @@ public class MemberService {
 	{
 		return dao.insertMember(dto);
 	}
+	
+	public MemberDTO selectLoginUser(String email, String password)
+	{
+		return dao.selsectLogin(email,password);
+	}
 }

@@ -1,5 +1,7 @@
 package com.codemate.cotroller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,5 +45,41 @@ public class HomeController {
     		return "redirect:/signup";
     	}
     	
+    }
+    
+    @GetMapping("/login")
+    public String loginGet()
+    {
+    	return "login";
+    }
+    
+    @PostMapping("/login")
+    public String loginPost(MemberDTO dto,
+    		HttpSession session,
+    		RedirectAttributes rttr)
+    {    	
+    	MemberDTO loginUser = memberService.selectLoginUser(dto.getEmail(),dto.getPassword());
+    	
+    	if(loginUser != null)
+    	{
+    		session.setAttribute("loginUser",loginUser);
+    		
+    		return "redirect:/";
+    	}
+    	
+    	rttr.addFlashAttribute("msg","이메일 또는 비밀번호가 틀렸습니다.");
+    	
+    	return "redirect:/index";
+    }
+    
+    @GetMapping("/logout")
+    public String logoutPost(HttpSession session)
+    {    	
+    	if(session != null)
+    	{
+    		session.invalidate();
+    	}
+    	
+    	return "redirect:/";
     }
 }
