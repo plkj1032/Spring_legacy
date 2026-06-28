@@ -13,7 +13,7 @@
 <title>회원가입 페이지</title>
 </head>
 <body>
-	<form action="signup " method="post">
+	<form action="${pageContext.request.contextPath}/member/signup" method="post">
 		이름 : 
 		<input type="text" name="name">
 		<br><br>

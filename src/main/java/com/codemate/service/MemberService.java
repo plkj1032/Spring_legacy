@@ -11,7 +11,7 @@ import com.codemate.dao.MemberDAO;
 public class MemberService {
 	
 	@Autowired
-	private MemberDAO dao = new MemberDAO();
+	private MemberDAO dao;
 	
 	public boolean insertMember(MemberDTO dto)
 	{

@@ -41,6 +41,24 @@ h1{
 	transition:0.3s;
 }
 
+.loginBox {
+	margin-top: 30px;
+}
+
+.welcome {
+	font-size: 18px;
+	color: #2c3e50;
+	margin-bottom: 30px;
+}
+
+.logoutBtn {
+	background: #e74c3c;
+}
+
+.logoutBtn:hover {
+	background: #c0392b;
+}
+
 .btn:hover{
 	background:#2980b9;
 }
