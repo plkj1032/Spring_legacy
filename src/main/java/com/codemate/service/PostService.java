@@ -19,9 +19,9 @@ public class PostService {
 		return pao.insertPost(pto);
 	}
 	
-	public List<PostDTO> selectList()
+	public List<PostDTO> selectList(int size,int offset)
 	{
-		return pao.selectPosts();
+		return pao.selectPosts(size,offset);
 	}
 	
 	public PostDTO selectPostDetail(int post_id)
@@ -37,5 +37,10 @@ public class PostService {
 	public boolean deletePost(int post_id)
 	{
 		return pao.deletePost(post_id);
+	}
+	
+	public int selectCountAll()
+	{
+		return pao.selectAllCount();
 	}
 }

@@ -47,21 +47,26 @@ public class PostDAO {
 	}
 	
 	
-	public List<PostDTO> selectPosts()
+	public List<PostDTO> selectPosts(int size,int offset)
 	{		
 		String sql = "SELECT p.id, p.title, p.view_count, "
 				+ "m.name AS post_writer, p.created_at "
 				+ "FROM posts p "
 				+ "JOIN members m ON p.member_id = m.id "
-				+ "ORDER BY p.id DESC";
+				+ "ORDER BY p.id DESC "
+				+ "LIMIT ?,?";
 		
 		try(
 			Connection conn = DBConnection.getConnection();
 				
 			PreparedStatement ps = conn.prepareStatement(sql);
 				
-			ResultSet rs = ps.executeQuery();
 				){
+			
+			ps.setInt(1, offset);
+			ps.setInt(2, size);
+			
+			ResultSet rs = ps.executeQuery();
 			
 			List<PostDTO> list = new ArrayList<>();
 			
@@ -180,5 +185,30 @@ public class PostDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public int selectAllCount()
+	{
+		String sql = "SELECT COUNT(*) AS posts_all FROM posts";
+		
+		try(
+			Connection conn = DBConnection.getConnection();
+				
+			PreparedStatement ps = conn.prepareStatement(sql);
+				
+			ResultSet rs = ps.executeQuery();
+				){
+			
+			if(rs.next())
+			{
+				return rs.getInt("posts_all");
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 }

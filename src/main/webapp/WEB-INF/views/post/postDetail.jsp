@@ -32,5 +32,16 @@
 		<p>게시글을 찾을 수 없습니다.</p>
 		<a href="${pageContext.request.contextPath}/post/list">목록으로</a>
 	<%} %>
+	
+	<form action="${pageContext.request.contextPath}/comment/write" method="post">
+		<input type="hidden" name="post_id" value="<%=post.getId() %>">
+		
+		<textarea name="content" rows="4" cols="50"></textarea>
+		<br>
+		
+		<button type="submit">댓글 등록</button>
+	
+	</form>
+	
 </body>
 </html>

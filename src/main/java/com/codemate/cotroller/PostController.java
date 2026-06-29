@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.codemate.dto.MemberDTO;
@@ -25,11 +26,43 @@ public class PostController {
 	private PostService service;
 	
 	@GetMapping("/list")
-	public String GetList(Model model)
+	public String GetList(
+			@RequestParam(value = "sizeParam", defaultValue="10") int size,
+			@RequestParam(value = "pageParam", defaultValue="1") int page,
+			Model model)
 	{
-		List<PostDTO> lists = service.selectList();
+		if(size != 5 && size != 10 && size != 20 && size != 50)
+		{
+			size = 10;
+		}
+		
+		if(page < 1)
+		{
+			page = 1;
+		}
+		
+		int totalCount = service.selectCountAll();
+		
+		int totalPage = (int)Math.ceil((double)totalCount / size);
+		
+		if(totalPage == 0)
+		{
+			totalPage = 1;
+		}
+		
+		if(page > totalPage)
+		{
+			page = totalPage;
+		}
+		
+		int offset = ( page - 1 ) * size;
+		
+		List<PostDTO> lists = service.selectList(size, offset);
 		
 		model.addAttribute("lists",lists);
+		model.addAttribute("totalPage",totalPage);
+		model.addAttribute("currentPage",page);
+		model.addAttribute("sizeParam",size);
 		
 		return "post/postList";
 	}
