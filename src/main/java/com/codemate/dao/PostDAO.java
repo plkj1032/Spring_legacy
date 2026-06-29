@@ -94,13 +94,11 @@ public class PostDAO {
 	
 	public PostDTO selectDetailPost(int post_id)
 	{
-		PostDTO post = null;
-		
+
 		String sql = "SELECT p.id,p.member_id,p.title,p.content,p.view_count,m.name AS post_writer,p.created_at "
 				+ "FROM posts p "
 				+ "JOIN members m ON p.member_id = m.id "
-				+ "WHERE p.id = ? "
-				+ "LIMIT ?,?";
+				+ "WHERE p.id = ? ";
 		
 		try(
 			Connection conn = DBConnection.getConnection();
@@ -113,7 +111,7 @@ public class PostDAO {
 			
 			if(rs.next())
 			{
-				post = new PostDTO();
+				PostDTO post = new PostDTO();
 				
 				post.setId(rs.getInt("id"));
 				post.setMember_id(rs.getInt("member_id"));
@@ -131,7 +129,7 @@ public class PostDAO {
 			e.printStackTrace();
 		}
 		
-		return post;
+		return null;
 	}
 	
 	public boolean updatePost(PostDTO pto)

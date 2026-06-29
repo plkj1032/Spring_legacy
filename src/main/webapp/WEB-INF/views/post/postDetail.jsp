@@ -2,8 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ page import="com.codemate.dto.PostDTO" %>
 <%@ page import="com.codemate.dto.MemberDTO" %>
-<%PostDTO post = (PostDTO) request.getAttribute("post"); %>
-<%MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser"); %>
+<%@ page import="com.codemate.dto.CommentDTO" %>
+<%@ page import="java.util.List" %>
+<%
+	PostDTO post = (PostDTO) request.getAttribute("post"); 
+	MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser"); 
+	List<CommentDTO> comments = (List<CommentDTO>) request.getAttribute("comments");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +37,51 @@
 		<p>게시글을 찾을 수 없습니다.</p>
 		<a href="${pageContext.request.contextPath}/post/list">목록으로</a>
 	<%} %>
+
+		<table border="1">
+			<tr>
+				<th>댓글번호</th>
+				<th>내용</th>
+				<th>작성자</th>
+				<th>작성시간</th>
+			</tr>
+	<%if(comments != null && !comments.isEmpty()) {%>
+		<%for(CommentDTO cto : comments) {%>
+			<tr>
+				<td><%=cto.getId() %></td>
+				<td>
+					<%=cto.getContent() %>
+					
+					<%if(loginUser != null && loginUser.getId() == cto.getMember_id()){ %>
+						<form action="${pageContext.request.contextPath}/comment/update" method="post">
+							<input type="hidden" name="id" value="<%=cto.getId() %>">
+							<input type="hidden" name="post_id" value="<%=post.getId() %>">
+							
+							<textarea name="content" rows="2" cols="40"><%= cto.getContent() %></textarea>
+							
+							<button type="submit">수정하기</button>
+						</form>
+						
+						<form action="${pageContext.request.contextPath}/comment/delete" method="post">
+							<input type="hidden" name="id" value="<%=cto.getId() %>">
+							<input type="hidden" name="post_id" value="<%=post.getId() %>">
+							
+							<button type="submit">삭제하기</button>
+						
+						</form>
+					<%} %>
+					
+				</td>
+				<td><%=cto.getComment_writer() %></td>
+				<td><%=cto.getCreated_at() %></td>
+			</tr>
+		<%} 
+		} else { %>
+		<tr>
+			<td colspan="5">댓글이 없습니다.</td>
+		</tr>
+	<% } %>
+	</table>
 	
 	<form action="${pageContext.request.contextPath}/comment/write" method="post">
 		<input type="hidden" name="post_id" value="<%=post.getId() %>">

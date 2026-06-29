@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.codemate.dto.CommentDTO;
 import com.codemate.dto.MemberDTO;
 import com.codemate.dto.PostDTO;
+import com.codemate.service.CommentService;
 import com.codemate.service.PostService;
 
 @Controller
@@ -24,6 +26,9 @@ public class PostController {
 
 	@Autowired
 	private PostService service;
+	
+	@Autowired
+	private CommentService c_service;
 	
 	@GetMapping("/list")
 	public String GetList(
@@ -72,7 +77,12 @@ public class PostController {
 	{
 		PostDTO post = service.selectPostDetail(id);
 		
+		//댓글
+		
+		List<CommentDTO> comments = c_service.selectComments(id);
+		
 		model.addAttribute("post",post);
+		model.addAttribute("comments",comments);
 		
 		return "post/postDetail";
 	}
